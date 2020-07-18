@@ -18,7 +18,9 @@ This app is nearly complete. It is only missing one thing… real data! While th
 
 We want Fyyur to be the next new platform that artists and musical venues can use to find each other, and discover new music shows. Let's make that happen!
 
-
+### Fyyur's example Artist page & Venue page
+![Main Page](https://github.com/potinmak/fyyur/blob/master/fyyur_4.png)
+![Main Page](https://github.com/potinmak/fyyur/blob/master/fyyur_5.png)
 
 
 ### Tech Stack
