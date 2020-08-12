@@ -37,7 +37,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 app.config['SECRET KEY'] = '12345678'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres@localhost:5432/fyyur'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:Liszt762!@localhost:5432/fyyur'
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
@@ -321,7 +321,7 @@ def create_venue_submission():
         facebook_link = form.facebook_link.data,
         seeking_talent = form.seeking_talent.data,
         seeking_description = form.seeking_description.data.strip(),
-        youtube_link = form.youtube_link.data.strip()
+        #youtube_link = form.youtube_link.data.strip()
     
     )
     try:
@@ -361,8 +361,8 @@ def delete_venue(venue_id):
         flash('An error occurred. Venue could not be deleted. Please come back again.')
     finally:
         db.session.close()
-
-    return redirect(url_for('venues'))
+    return jsonify({'success': True})
+    #return redirect(url_for('venues'))
 ######################################################################################################################
 #  Artists Page
 #  ----------------------------------------------------------------
@@ -520,6 +520,11 @@ def create_artist_form():
 def create_artist_submission():
     form = ArtistForm(request.form)
     error = False
+    past_shows = []
+    upcoming_shows = []
+    past_shows_num=0
+    upcoming_shows_num=0
+    current_shows_num=0
 
     artist = Artist(
         name = form.name.data,
@@ -581,18 +586,28 @@ def create_artist_submission():
 #Same as delete venue, the delete action would be activated when a user input their url with artists/id/delete
 #warning would be given when a delete is not succssful
 
-@app.route('/artist/<artist_id>/delete', methods=['DELETE'])
+@app.route('/artists/<int:artist_id>/delete', methods=['DELETE'])
 def delete_artist(artist_id):
+    error = False
     try:
-        db.session.query(Artist).filter(Artist.id == artist_id).delete()
+        artist_delete = db.session.query(Artist).filter(Artist.id == artist_id).one()
+        Artist.query.filter_by(id = artist_id).delete()
         db.session.commit()
         flash('Artist was successfully deleted!')
     except:
          flash('An error occurred. Artist could not be deleted.')
+         error = True
          db.session.rollback()
     finally:
          db.session.close()
-    return redirect(url_for('artist'))
+    
+    if error:
+        abort(400)
+    else:
+        flasg('success!')
+        return redirect(url_for('index'))
+
+
 ######################################################################################################################
 #########  Update Artist
 
@@ -733,7 +748,7 @@ def shows():
         artist = db.session.query(Artist.name, Artist.image_link).filter(Artist.id == show[0]).one()
         venue = db.session.query(Venue.name, Venue.id).filter(Venue.id == show[1]).one()
         
-        link.append({
+        links.append({
             "facebook_link": social_media[0],
             "twitter_link": social_media[1],
 
@@ -803,6 +818,9 @@ def create_show_submission():
     if (error == True):
         flash('An error has occured. Please contact our back end developer for more details')
     return render_template('pages/home.html')
+######################################################################################
+#delete venues
+
 
 ###########################################################################################################
 ######THE END###########
