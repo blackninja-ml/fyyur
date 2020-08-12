@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
-		<h1>Fyyur 🔥</h1>
+		<h1>Musictopia 🎼</h1>
 		<p class="lead">Where musical artists meet musical venues.</p>
 		<h3>
 			<a href="/venues"><button class="btn btn-primary btn-lg">Find a venue</button></a>
@@ -19,7 +19,30 @@
 		</h3>
 	</div>
 	<div class="col-sm-6 hidden-sm hidden-xs">
-		<img id="front-splash" src="{{ url_for('static',filename='img/haha.jpg') }}" alt="Front Photo of Musical Band" />
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/haha.jpg') }}" alt="Front Photo of Musical Band" />
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/hiroomi.jpg') }}" alt="Front Photo of Musical Band"/>
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/elly.jpg') }}" alt="Front Photo of Musical Band"/>
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/jcole.jpg') }}" alt="Front Photo of Musical Band"/>
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/v2.jpg') }}" alt="Front Photo of Musical Band"/>
+		<img class = "picture" id="front-splash" src="{{ url_for('static',filename='img/21savageiam.jpg') }}" alt="Front Photo of Musical Band"/>
+		
 	</div>
 </div>
+<script>
+    var myIndex = 0;
+    carousel();
+    
+    function carousel() {
+      var i;
+      var x = document.getElementsByClassName("picture");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+      }
+      myIndex++;
+      if (myIndex > x.length) {myIndex = 1}    
+      x[myIndex-1].style.display = "block";  
+      setTimeout(carousel, 2500); // Change image every 2 seconds
+    }
+    </script>
+	
 {% endblock %}
